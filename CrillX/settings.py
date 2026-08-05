@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'users',
+    'courses',
 ]
 
 AUTH_USER_MODEL = 'users.User'
