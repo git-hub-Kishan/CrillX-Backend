@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Django Migrations (Never push migrations to production repository if starting fresh, or if team decides)
+**/migrations/*
+!**/migrations/__init__.py
+
+# Virtual Environment
+env/
+venv/
+ENV/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Database
+*.sqlite3
+*.sqlite3-journal
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Logs
+*.log

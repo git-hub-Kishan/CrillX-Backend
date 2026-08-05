@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to CrillX!</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 16px;
+            background: #f5f7fb;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-width: 160px;
+            height: auto;
+            width: auto;
+            display: block;
+        }
+
+        .content {
+            color: #333333;
+            line-height: 1.7;
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        .content p {
+            margin: 14px 0;
+        }
+
+        .footer {
+            border-top: 1px solid #ececec;
+            padding-top: 18px;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #777;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 480px) {
+            body {
+                padding: 10px !important;
+            }
+
+            .container {
+                padding: 18px 16px !important;
+                border-radius: 10px !important;
+            }
+
+            .logo img {
+                max-height: 36px !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="logo">
+                <img src="https://imgh.in/host/hqzz25" alt="CrillX"
+                    style="max-height: 44px; max-width: 180px; height: 44px; width: auto; display: block; border: 0;"
+                    height="44">
+            </div>
+        </div>
+
+        <div class="content">
+
+            <p style="font-size: 18px; font-weight: bold; color: #111827;">
+                Welcome to CrillX, {% if user_name %}{{ user_name }}{% else %}there{% endif %}! 🎉
+            </p>
+
+            <p>
+                Your profile setup is complete, and your account is now fully active as a <strong>{{ user_type|title }}</strong>.
+            </p>
+
+            {% if user_type == 'creator' %}
+            <p>
+                We're super excited to have you on board! As a CrillX Creator, you can start building your brand,
+                publishing courses, and engaging with your audience right away.
+            </p>
+            {% else %}
+            <p>
+                We're excited to have you join our learning community! You can now explore top courses, learn from
+                expert creators, and track your skills.
+            </p>
+            {% endif %}
+
+            <p style="margin-top: 25px;">
+                If you ever need any assistance or have questions, our support team is always here to help.
+            </p>
+
+            <p style="margin-top: 25px;">
+                <strong>Best regards,<br>The CrillX Team</strong>
+            </p>
+
+        </div>
+
+        <div class="footer">
+            © {{ current_year|default:"2026" }} CrillX. All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+
+</html>

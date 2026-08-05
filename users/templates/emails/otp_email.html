@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification OTP - CrillX</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 16px;
+            background: #f5f7fb;
+            font-family: Arial, Helvetica, sans-serif;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+
+        .logo img {
+            max-height: 44px;
+            max-width: 160px;
+            height: auto;
+            width: auto;
+            display: block;
+        }
+
+        .content {
+            color: #333333;
+            line-height: 1.7;
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        .content p {
+            margin: 0 0 18px;
+        }
+
+        .otp-title {
+            text-align: center;
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .otp {
+            display: inline-block;
+            background: #EEF2FF;
+            color: #4F46E5;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 6px;
+            padding: 12px 28px;
+            border-radius: 8px;
+            border: 1px solid #C7D2FE;
+        }
+
+        .otp-wrapper {
+            text-align: center;
+            margin: 25px 0 10px;
+        }
+
+        .valid {
+            text-align: center;
+            color: #666666;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .footer {
+            border-top: 1px solid #ececec;
+            padding-top: 18px;
+            margin-top: 25px;
+            font-size: 13px;
+            color: #777777;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 480px) {
+            body {
+                padding: 10px !important;
+            }
+            .container {
+                padding: 18px 16px !important;
+                border-radius: 10px !important;
+            }
+            .otp {
+                font-size: 24px !important;
+                padding: 10px 18px !important;
+                letter-spacing: 4px !important;
+            }
+            .logo img {
+                max-height: 36px !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="logo">
+                <img src="https://imgh.in/host/hqzz25" alt="CrillX" style="max-height: 44px; max-width: 180px; height: 44px; width: auto; display: block; border: 0;" height="44">
+            </div>
+        </div>
+
+        <div class="content">
+
+            <p>
+                Hello {% if user_name %}{{ user_name }}{% else %}there{% endif %},
+            </p>
+
+            <p>
+                Thank you for registering with <strong>CrillX</strong>!
+                Please use the OTP below to verify your email address and
+                complete your signup as
+                <strong>{{ user_type }}</strong>.
+            </p>
+
+            <div class="otp-wrapper">
+                <div class="otp-title">
+                    Your OTP
+                </div>
+                <span class="otp">{{ otp }}</span>
+            </div>
+
+            <div class="valid">
+                Valid for <strong>5 minutes</strong>
+            </div>
+
+            <p>
+                If you did not request this verification code,
+                please ignore this email.
+            </p>
+
+            <p style="margin-top: 25px;">
+                <strong>Thanks,<br>CrillX Team</strong>
+            </p>
+
+        </div>
+
+        <div class="footer">
+            © {{ current_year|default:"2026" }} CrillX. All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+
+</html>
