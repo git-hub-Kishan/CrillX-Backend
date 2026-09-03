@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from utils.s3_utils import get_file_url
 from users.serializers.user_serializers import UserProfileDetailSerializer
 from users.services.auth_services import get_tokens_for_user
 from users.services.email_service import send_welcome_email
@@ -71,7 +72,7 @@ class MeAPIView(APIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "email": user.email,
-                    "profile_picture": profile_picture,
+                    "profile_picture": get_file_url(profile_picture),
                     "user_type": user.user_type,
                     "is_profile_created": is_profile_created
                 }

@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from utils.s3_utils import get_file_url
 from users.helpers.model_helpers import ExperienceRange, Profession, TeachingCategory, UserType
 from users.serializers.profile_serializers import CreatorProfileSerializer, LearnerProfileSerializer
 
@@ -106,7 +107,7 @@ class UserProfileDetailSerializer(serializers.Serializer):
             "last_name": user.last_name,
             "phone_number": user.phone_number,
             "user_type": user.user_type,
-            "profile_picture": profile.profile_picture if profile else None,
+            "profile_picture": get_file_url(profile.profile_picture) if (profile and profile.profile_picture) else None,
             "dob": profile.dob.isoformat() if (profile and profile.dob) else None,
             "state": profile.state if profile else None,
             "city": profile.city if profile else None,

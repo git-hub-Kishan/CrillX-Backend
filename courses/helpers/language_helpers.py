@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class CourseLanguage(models.TextChoices):
     # International Languages
     ENGLISH = 'en', 'English'
@@ -13,7 +14,7 @@ class CourseLanguage(models.TextChoices):
     JAPANESE = 'ja', 'Japanese'
     KOREAN = 'ko', 'Korean'
     
-    # National / Regional Languages (India focus as an example, common globally)
+    # National / Regional Languages
     HINDI = 'hi', 'Hindi'
     BENGALI = 'bn', 'Bengali'
     TELUGU = 'te', 'Telugu'

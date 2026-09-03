@@ -9,7 +9,6 @@ from users.helpers.model_helpers import (
     TeachingCategory,
     UserType,
 )
-from users.helpers.language_helpers import CourseLanguage
 
 
 class User(AbstractUser):

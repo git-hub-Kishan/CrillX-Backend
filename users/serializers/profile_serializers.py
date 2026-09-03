@@ -2,6 +2,7 @@ from rest_framework import serializers
 from users.models import CreatorProfile, LearnerProfile
 from users.helpers.location_helpers import State
 from users.helpers.model_helpers import ExperienceRange, Profession, TeachingCategory
+from utils.s3_utils import get_file_url
 
 
 class CreatorProfileSerializer(serializers.ModelSerializer):
@@ -23,6 +24,12 @@ class CreatorProfileSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data.get('profile_picture'):
+            data['profile_picture'] = get_file_url(data['profile_picture'])
+        return data
 
     def validate_state(self, value):
         if value and value not in State.values:
@@ -59,6 +66,12 @@ class LearnerProfileSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if data.get('profile_picture'):
+            data['profile_picture'] = get_file_url(data['profile_picture'])
+        return data
 
     def validate_state(self, value):
         if value and value not in State.values:

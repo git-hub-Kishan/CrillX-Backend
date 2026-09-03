@@ -36,6 +36,7 @@ urlpatterns = [
     path('profile/', ProfileAPIView.as_view(), name='profile'),
     
     path('s3/presigned-url/', S3PresignedUrlAPIView.as_view(), name='s3-presigned-url'),
+
 ]
 
 

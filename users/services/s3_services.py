@@ -19,7 +19,11 @@ def generate_presigned_upload_url(folder_name, file_name, file_type, expiration=
     """
     Generate a presigned URL to upload a file to S3 using PUT.
     Returns a dictionary containing the URL and the file_key.
+    If S3 is disabled (USE_S3_TOGGLE=False), returns False.
     """
+    if not getattr(settings, 'USE_S3_TOGGLE', False):
+        return False, "S3 storage is currently disabled."
+
     s3_client = get_s3_client()
     
     # Generate a unique filename to prevent overwrites
