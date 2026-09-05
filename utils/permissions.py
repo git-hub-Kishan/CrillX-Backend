@@ -28,3 +28,22 @@ class IsLearnerUser(BasePermission):
             request.user.is_authenticated and
             request.user.user_type == UserType.LEARNER
         )
+
+
+class IsSuperAdminUser(BasePermission):
+    """
+    Custom permission to only allow users with user_type 'superadmin' or superusers/staff to access.
+    """
+    message = "Only administrators are allowed to perform this action."
+
+    def has_permission(self, request, view):
+        return bool(
+            request.user and
+            request.user.is_authenticated and
+            (
+                request.user.user_type == UserType.SUPERADMIN or
+                request.user.is_superuser or
+                request.user.is_staff
+            )
+        )
+

@@ -43,3 +43,38 @@ class Profession(models.TextChoices):
 
 
 from users.helpers.location_helpers import STATE_CITIES_MAP, State  # noqa: F401
+
+
+def standardize_youtube_url(value):
+    """
+    Standardizes YouTube input to full URL format: https://www.youtube.com/@handle
+    Accepts handle, @handle, or full/partial URL.
+    """
+    if not value or not str(value).strip():
+        return None
+    val = str(value).strip()
+    if val.startswith('http://') or val.startswith('https://'):
+        return val
+    if val.startswith('youtube.com/') or val.startswith('www.youtube.com/'):
+        return f"https://{val}"
+    
+    clean_handle = val.lstrip('@')
+    return f"https://www.youtube.com/@{clean_handle}" if clean_handle else None
+
+
+def standardize_instagram_url(value):
+    """
+    Standardizes Instagram input to full URL format: https://www.instagram.com/handle
+    Accepts handle, @handle, or full/partial URL.
+    """
+    if not value or not str(value).strip():
+        return None
+    val = str(value).strip()
+    if val.startswith('http://') or val.startswith('https://'):
+        return val
+    if val.startswith('instagram.com/') or val.startswith('www.instagram.com/'):
+        return f"https://{val}"
+    
+    clean_handle = val.lstrip('@')
+    return f"https://www.instagram.com/{clean_handle}" if clean_handle else None
+

@@ -91,6 +91,15 @@ class UserProfileDetailSerializer(serializers.Serializer):
             raise serializers.ValidationError(f"Invalid profession. Choose from: {Profession.values}")
         return value
 
+    def validate_yt_username(self, value):
+        from users.helpers.model_helpers import standardize_youtube_url
+        return standardize_youtube_url(value)
+
+    def validate_insta_username(self, value):
+        from users.helpers.model_helpers import standardize_instagram_url
+        return standardize_instagram_url(value)
+
+
     def to_representation(self, instance):
         user = instance
         profile = None
