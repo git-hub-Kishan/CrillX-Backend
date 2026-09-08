@@ -1,0 +1,64 @@
+name: Deploy to Production EC2
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Sync files to EC2 (Preserving production .env)
+        run: |
+          rsync -avz --delete \
+            --exclude='.env' \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='__pycache__' \
+            --exclude='*.pyc' \
+            --exclude='.vscode' \
+            --exclude='env' \
+            --exclude='venv' \
+            -e "ssh -i ~/.ssh/id_rsa" \
+            ./ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/backend/CrillX-Backend/
+
+      - name: Run post-deploy steps on EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            echo "==> Navigating to application directory..."
+            cd /var/www/backend/CrillX-Backend
+
+            echo "==> Installing / updating Python dependencies..."
+            /var/www/backend/venv/bin/pip install -r requirements.txt
+
+            echo "==> Running Django database migrations..."
+            /var/www/backend/venv/bin/python manage.py migrate --noinput
+
+            echo "==> Restarting backend systemd service..."
+            sudo systemctl restart crillx-backend
+
+            echo "==> Verifying service health..."
+            sudo systemctl is-active --quiet crillx-backend
+
+            echo "==> Deployment completed successfully!"
+          EOF
+
+      - name: Clean up SSH credentials
+        if: always()
+        run: rm -f ~/.ssh/id_rsa
