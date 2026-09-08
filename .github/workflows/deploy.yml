@@ -24,7 +24,7 @@ jobs:
 
       - name: Sync files to EC2 (Preserving production .env)
         run: |
-          rsync -avz --delete \
+          rsync -avz \
             --exclude='.env' \
             --exclude='.git' \
             --exclude='.github' \
