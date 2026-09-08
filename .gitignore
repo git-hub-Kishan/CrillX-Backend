@@ -3,9 +3,6 @@ __pycache__/
 **/__pycache__/
 *.pyc
 
-# Django Migrations (Never push migrations to production repository if starting fresh, or if team decides)
-**/migrations/*
-!**/migrations/__init__.py
 
 # Virtual Environment
 env/
