@@ -14,6 +14,7 @@ from users.views.auth_views import (
 )
 from users.views.profile_views import CreateProfileAPIView, MeAPIView ,ProfileAPIView
 from users.views.s3_views import S3PresignedUrlAPIView
+from admin.views.header_gif_views import ActiveHeaderGIFAPIView
 
 
 app_name = 'users'
@@ -36,8 +37,9 @@ urlpatterns = [
     path('profile/', ProfileAPIView.as_view(), name='profile'),
     
     path('s3/presigned-url/', S3PresignedUrlAPIView.as_view(), name='s3-presigned-url'),
-
+    path('header-gif/active/', ActiveHeaderGIFAPIView.as_view(), name='public-header-gif-active'),
 ]
+
 
 
 

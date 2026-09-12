@@ -8,6 +8,10 @@ from admin.views.creator_views import (
 )
 from admin.views.learner_views import AdminLearnerListAPIView
 from admin.views.user_views import AdminUserKPIAPIView, AdminUserStatusUpdateAPIView
+from admin.views.header_gif_views import (
+    AdminHeaderGIFListCreateAPIView,
+    AdminHeaderGIFDetailAPIView,
+)
 
 app_name = 'admin_api'
 
@@ -23,4 +27,8 @@ urlpatterns = [
     path('users/creators/<str:creator_identifier>/courses/<str:course_identifier>/modules/', AdminCreatorCourseModulesAPIView.as_view(), name='admin-creator-course-modules'),
     
     path('users/learners/', AdminLearnerListAPIView.as_view(), name='admin-learner-list'),
+
+    # Header GIF Manager Endpoints
+    path('header-gifs/', AdminHeaderGIFListCreateAPIView.as_view(), name='admin-header-gif-list-create'),
+    path('header-gifs/<str:identifier>/', AdminHeaderGIFDetailAPIView.as_view(), name='admin-header-gif-detail'),
 ]

@@ -5,4 +5,7 @@ ALLOWED_S3_FOLDERS = (
     'thumbnails',
     'documents',
     'videos',
+    'header_gifs',
+    'banners',
 )
+
