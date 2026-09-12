@@ -11,6 +11,22 @@ from users.services.s3_services import delete_file_from_s3
 logger = logging.getLogger(__name__)
 
 
+def _deactivate_overlapping_active_banners(instance: HeaderGIFBanner):
+    """
+    Ensures that only ONE GIF banner is active at a time.
+    When a banner is set to is_active=True, any other active banner that overlaps with
+    its scheduled active period is automatically deactivated (is_active=False).
+    """
+    if not instance.is_active:
+        return
+
+    HeaderGIFBanner.objects.filter(
+        is_active=True,
+        start_date_time__lte=instance.end_date_time,
+        end_date_time__gte=instance.start_date_time,
+    ).exclude(id=instance.id).update(is_active=False)
+
+
 def get_header_gifs_queryset(search: Optional[str] = None, status: Optional[str] = None, target_audience: Optional[str] = None):
     """
     Returns filtered queryset for header GIF banners based on search query, dynamic status, and target audience.
@@ -70,18 +86,25 @@ def get_header_gif_by_identifier(identifier: str) -> Optional[HeaderGIFBanner]:
 
 def create_header_gif(validated_data: dict) -> HeaderGIFBanner:
     """
-    Creates and saves a new HeaderGIFBanner instance.
+    Creates and saves a new HeaderGIFBanner instance and ensures only one active banner exists.
     """
-    return HeaderGIFBanner.objects.create(**validated_data)
+    instance = HeaderGIFBanner.objects.create(**validated_data)
+    if instance.is_active:
+        _deactivate_overlapping_active_banners(instance)
+    return instance
 
 
 def update_header_gif(instance: HeaderGIFBanner, validated_data: dict) -> HeaderGIFBanner:
     """
-    Updates an existing HeaderGIFBanner instance with validated fields.
+    Updates an existing HeaderGIFBanner instance with validated fields and enforces single active banner rule.
     """
     for key, value in validated_data.items():
         setattr(instance, key, value)
     instance.save()
+
+    if instance.is_active:
+        _deactivate_overlapping_active_banners(instance)
+
     return instance
 
 
@@ -105,7 +128,7 @@ def delete_header_gif(instance: HeaderGIFBanner) -> Tuple[bool, str]:
 
 def get_active_header_gif_for_client(audience: Optional[str] = None, user=None) -> Optional[HeaderGIFBanner]:
     """
-    Returns the currently active Header GIF banner for a given client context.
+    Returns the single currently active Header GIF banner for a given client context.
     Matches active banners where is_active=True and start_date_time <= now <= end_date_time.
     """
     now = timezone.now()
